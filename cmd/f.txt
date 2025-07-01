@@ -1,0 +1,4 @@
+var a = {}
+for k,v = range a {
+  print(k,":", v)
+}

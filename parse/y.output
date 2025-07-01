@@ -1,0 +1,2825 @@
+
+state 0
+	$accept: .chunk $end 
+	chunk1: .    (4)
+
+	.  reduce 4 (src line 62)
+
+	chunk  goto 1
+	chunk1  goto 2
+
+state 1
+	$accept:  chunk.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	chunk:  chunk1.    (1)
+	chunk:  chunk1.laststmt 
+	chunk:  chunk1.laststmt ';' 
+	chunk1:  chunk1.stmt 
+	chunk1:  chunk1.';' 
+
+	If  shift 18
+	For  shift 19
+	While  shift 9
+	Break  shift 6
+	Return  shift 7
+	Function  shift 13
+	Var  shift 14
+	Append  shift 16
+	Ident  shift 21
+	';'  shift 5
+	.  reduce 1 (src line 45)
+
+	laststmt  goto 3
+	stmt  goto 4
+	forNumStmt  goto 11
+	ifstmt  goto 10
+	forRangeStmt  goto 12
+	lhslist  goto 8
+	lhs  goto 17
+	prefixexp  goto 20
+	functioncall  goto 15
+
+state 3
+	chunk:  chunk1 laststmt.    (2)
+	chunk:  chunk1 laststmt.';' 
+
+	';'  shift 22
+	.  reduce 2 (src line 50)
+
+
+state 4
+	chunk1:  chunk1 stmt.    (5)
+
+	.  reduce 5 (src line 64)
+
+
+state 5
+	chunk1:  chunk1 ';'.    (6)
+
+	.  reduce 6 (src line 66)
+
+
+state 6
+	laststmt:  Break.    (7)
+
+	.  reduce 7 (src line 70)
+
+
+state 7
+	laststmt:  Return.    (8)
+	laststmt:  Return.exprlist 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  reduce 8 (src line 72)
+
+	exprlist  goto 23
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 24
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 8
+	stmt:  lhslist.'=' exprlist 
+	lhslist:  lhslist.',' lhs 
+
+	'='  shift 42
+	','  shift 43
+	.  error
+
+
+state 9
+	stmt:  While.expr block 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 44
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 10
+	stmt:  ifstmt.    (12)
+
+	.  reduce 12 (src line 82)
+
+
+state 11
+	stmt:  forNumStmt.    (13)
+
+	.  reduce 13 (src line 84)
+
+
+state 12
+	stmt:  forRangeStmt.    (14)
+
+	.  reduce 14 (src line 86)
+
+
+state 13
+	stmt:  Function.Ident parlist block 
+
+	Ident  shift 45
+	.  error
+
+
+state 14
+	stmt:  Var.namelist 
+	stmt:  Var.namelist '=' exprlist 
+
+	Ident  shift 47
+	.  error
+
+	namelist  goto 46
+
+state 15
+	stmt:  functioncall.    (18)
+	prefixexp:  functioncall.    (40)
+
+	'('  reduce 40 (src line 171)
+	'.'  reduce 40 (src line 171)
+	'['  reduce 40 (src line 171)
+	.  reduce 18 (src line 94)
+
+
+state 16
+	stmt:  Append.'(' lhs ',' expr ')' 
+
+	'('  shift 48
+	.  error
+
+
+state 17
+	lhslist:  lhs.    (32)
+	prefixexp:  lhs.    (39)
+
+	'='  reduce 32 (src line 149)
+	','  reduce 32 (src line 149)
+	.  reduce 39 (src line 169)
+
+
+state 18
+	ifstmt:  If.expr block 
+	ifstmt:  If.expr block Else block 
+	ifstmt:  If.expr block Else ifstmt 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 49
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 19
+	forRangeStmt:  For.Ident ',' Ident '=' Range lhs block 
+	forNumStmt:  For.Ident '=' expr ',' expr block 
+	forNumStmt:  For.Ident '=' expr ',' expr ',' expr block 
+
+	Ident  shift 50
+	.  error
+
+
+state 20
+	lhs:  prefixexp.'.' Ident 
+	lhs:  prefixexp.'[' expr ']' 
+	functioncall:  prefixexp.'(' ')' 
+	functioncall:  prefixexp.'(' args ')' 
+
+	'('  shift 53
+	'.'  shift 51
+	'['  shift 52
+	.  error
+
+
+state 21
+	lhs:  Ident.    (36)
+
+	.  reduce 36 (src line 161)
+
+
+state 22
+	chunk:  chunk1 laststmt ';'.    (3)
+
+	.  reduce 3 (src line 55)
+
+
+state 23
+	laststmt:  Return exprlist.    (9)
+	exprlist:  exprlist.',' expr 
+
+	','  shift 54
+	.  reduce 9 (src line 74)
+
+
+state 24
+	exprlist:  expr.    (34)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 34 (src line 155)
+
+
+state 25
+	expr:  True.    (45)
+
+	.  reduce 45 (src line 187)
+
+
+state 26
+	expr:  False.    (46)
+
+	.  reduce 46 (src line 189)
+
+
+state 27
+	expr:  Nil.    (47)
+
+	.  reduce 47 (src line 191)
+
+
+state 28
+	expr:  Number.    (48)
+
+	.  reduce 48 (src line 193)
+
+
+state 29
+	expr:  String.    (49)
+
+	.  reduce 49 (src line 195)
+
+
+state 30
+	lhs:  prefixexp.'.' Ident 
+	lhs:  prefixexp.'[' expr ']' 
+	functioncall:  prefixexp.'(' ')' 
+	functioncall:  prefixexp.'(' args ')' 
+	expr:  prefixexp.    (50)
+
+	'('  shift 53
+	'.'  shift 51
+	'['  shift 52
+	.  reduce 50 (src line 197)
+
+
+state 31
+	expr:  Function.parlist block 
+
+	'('  shift 72
+	.  error
+
+	parlist  goto 71
+
+state 32
+	expr:  '('.expr ')' 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 73
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 33
+	expr:  '-'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 74
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 34
+	expr:  '!'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 75
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 35
+	expr:  dictConstructor.    (71)
+
+	.  reduce 71 (src line 261)
+
+
+state 36
+	expr:  listConstructor.    (72)
+
+	.  reduce 72 (src line 263)
+
+
+state 37
+	expr:  '#'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 76
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 38
+	prefixexp:  lhs.    (39)
+
+	.  reduce 39 (src line 169)
+
+
+state 39
+	prefixexp:  functioncall.    (40)
+
+	.  reduce 40 (src line 171)
+
+
+state 40
+	dictConstructor:  '{'.'}' 
+	dictConstructor:  '{'.entries '}' 
+
+	String  shift 80
+	Ident  shift 81
+	'}'  shift 77
+	.  error
+
+	entries  goto 78
+	entry  goto 79
+
+state 41
+	listConstructor:  '['.']' 
+	listConstructor:  '['.exprlist ']' 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	']'  shift 82
+	'#'  shift 37
+	.  error
+
+	exprlist  goto 83
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 24
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 42
+	stmt:  lhslist '='.exprlist 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	exprlist  goto 84
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 24
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 43
+	lhslist:  lhslist ','.lhs 
+
+	Ident  shift 21
+	.  error
+
+	lhs  goto 85
+	prefixexp  goto 20
+	functioncall  goto 39
+
+state 44
+	stmt:  While expr.block 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'{'  shift 87
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+	block  goto 86
+
+state 45
+	stmt:  Function Ident.parlist block 
+
+	'('  shift 72
+	.  error
+
+	parlist  goto 88
+
+state 46
+	stmt:  Var namelist.    (16)
+	stmt:  Var namelist.'=' exprlist 
+	namelist:  namelist.',' Ident 
+
+	'='  shift 89
+	','  shift 90
+	.  reduce 16 (src line 90)
+
+
+state 47
+	namelist:  Ident.    (29)
+
+	.  reduce 29 (src line 139)
+
+
+state 48
+	stmt:  Append '('.lhs ',' expr ')' 
+
+	Ident  shift 21
+	.  error
+
+	lhs  goto 91
+	prefixexp  goto 20
+	functioncall  goto 39
+
+state 49
+	ifstmt:  If expr.block 
+	ifstmt:  If expr.block Else block 
+	ifstmt:  If expr.block Else ifstmt 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'{'  shift 87
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+	block  goto 92
+
+state 50
+	forRangeStmt:  For Ident.',' Ident '=' Range lhs block 
+	forNumStmt:  For Ident.'=' expr ',' expr block 
+	forNumStmt:  For Ident.'=' expr ',' expr ',' expr block 
+
+	'='  shift 94
+	','  shift 93
+	.  error
+
+
+state 51
+	lhs:  prefixexp '.'.Ident 
+
+	Ident  shift 95
+	.  error
+
+
+state 52
+	lhs:  prefixexp '['.expr ']' 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 96
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 53
+	functioncall:  prefixexp '('.')' 
+	functioncall:  prefixexp '('.args ')' 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	')'  shift 97
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	args  goto 98
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 99
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 54
+	exprlist:  exprlist ','.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 100
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 55
+	expr:  expr '+'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 101
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 56
+	expr:  expr '-'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 102
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 57
+	expr:  expr '*'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 103
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 58
+	expr:  expr '/'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 104
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 59
+	expr:  expr '%'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 105
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 60
+	expr:  expr '|'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 106
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 61
+	expr:  expr '&'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 107
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 62
+	expr:  expr And.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 108
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 63
+	expr:  expr Or.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 109
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 64
+	expr:  expr '<'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 110
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 65
+	expr:  expr '>'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 111
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 66
+	expr:  expr Le.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 112
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 67
+	expr:  expr Ge.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 113
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 68
+	expr:  expr Eq2.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 114
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 69
+	expr:  expr Neq.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 115
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 70
+	expr:  expr Dot2.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 116
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 71
+	expr:  Function parlist.block 
+
+	'{'  shift 87
+	.  error
+
+	block  goto 117
+
+state 72
+	parlist:  '('.')' 
+	parlist:  '('.namelist ')' 
+	parlist:  '('.namelist ',' Dot3 ')' 
+
+	Ident  shift 47
+	')'  shift 118
+	.  error
+
+	namelist  goto 119
+
+state 73
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  '(' expr.')' 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	')'  shift 120
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+
+74: shift/reduce conflict (shift 60(0), red'n 69(7)) on '|'
+74: shift/reduce conflict (shift 61(0), red'n 69(7)) on '&'
+state 74
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+	expr:  '-' expr.    (69)
+
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 69 (src line 257)
+
+
+75: shift/reduce conflict (shift 60(0), red'n 70(7)) on '|'
+75: shift/reduce conflict (shift 61(0), red'n 70(7)) on '&'
+state 75
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+	expr:  '!' expr.    (70)
+
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 70 (src line 259)
+
+
+76: shift/reduce conflict (shift 62(2), red'n 73(0)) on And
+76: shift/reduce conflict (shift 63(1), red'n 73(0)) on Or
+76: shift/reduce conflict (shift 68(3), red'n 73(0)) on Eq2
+76: shift/reduce conflict (shift 69(3), red'n 73(0)) on Neq
+76: shift/reduce conflict (shift 67(3), red'n 73(0)) on Ge
+76: shift/reduce conflict (shift 66(3), red'n 73(0)) on Le
+76: shift/reduce conflict (shift 70(4), red'n 73(0)) on Dot2
+76: shift/reduce conflict (shift 65(3), red'n 73(0)) on '>'
+76: shift/reduce conflict (shift 64(3), red'n 73(0)) on '<'
+76: shift/reduce conflict (shift 55(5), red'n 73(0)) on '+'
+76: shift/reduce conflict (shift 56(5), red'n 73(0)) on '-'
+76: shift/reduce conflict (shift 57(6), red'n 73(0)) on '*'
+76: shift/reduce conflict (shift 58(6), red'n 73(0)) on '/'
+76: shift/reduce conflict (shift 59(6), red'n 73(0)) on '%'
+76: shift/reduce conflict (shift 60(0), red'n 73(0)) on '|'
+76: shift/reduce conflict (shift 61(0), red'n 73(0)) on '&'
+state 76
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+	expr:  '#' expr.    (73)
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 73 (src line 265)
+
+
+state 77
+	dictConstructor:  '{' '}'.    (74)
+
+	.  reduce 74 (src line 271)
+
+
+state 78
+	dictConstructor:  '{' entries.'}' 
+	entries:  entries.',' entry 
+
+	','  shift 122
+	'}'  shift 121
+	.  error
+
+
+state 79
+	entries:  entry.    (76)
+
+	.  reduce 76 (src line 282)
+
+
+state 80
+	entry:  String.':' expr 
+
+	':'  shift 123
+	.  error
+
+
+state 81
+	entry:  Ident.':' expr 
+
+	':'  shift 124
+	.  error
+
+
+state 82
+	listConstructor:  '[' ']'.    (80)
+
+	.  reduce 80 (src line 300)
+
+
+state 83
+	exprlist:  exprlist.',' expr 
+	listConstructor:  '[' exprlist.']' 
+
+	','  shift 54
+	']'  shift 125
+	.  error
+
+
+state 84
+	stmt:  lhslist '=' exprlist.    (10)
+	exprlist:  exprlist.',' expr 
+
+	','  shift 54
+	.  reduce 10 (src line 78)
+
+
+state 85
+	lhslist:  lhslist ',' lhs.    (33)
+	prefixexp:  lhs.    (39)
+
+	'='  reduce 33 (src line 151)
+	','  reduce 33 (src line 151)
+	.  reduce 39 (src line 169)
+
+
+state 86
+	stmt:  While expr block.    (11)
+
+	.  reduce 11 (src line 80)
+
+
+state 87
+	block:  '{'.chunk '}' 
+	chunk1: .    (4)
+
+	.  reduce 4 (src line 62)
+
+	chunk  goto 126
+	chunk1  goto 2
+
+state 88
+	stmt:  Function Ident parlist.block 
+
+	'{'  shift 87
+	.  error
+
+	block  goto 127
+
+state 89
+	stmt:  Var namelist '='.exprlist 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	exprlist  goto 128
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 24
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 90
+	namelist:  namelist ','.Ident 
+
+	Ident  shift 129
+	.  error
+
+
+state 91
+	stmt:  Append '(' lhs.',' expr ')' 
+	prefixexp:  lhs.    (39)
+
+	','  shift 130
+	.  reduce 39 (src line 169)
+
+
+state 92
+	ifstmt:  If expr block.    (20)
+	ifstmt:  If expr block.Else block 
+	ifstmt:  If expr block.Else ifstmt 
+
+	Else  shift 131
+	.  reduce 20 (src line 109)
+
+
+state 93
+	forRangeStmt:  For Ident ','.Ident '=' Range lhs block 
+
+	Ident  shift 132
+	.  error
+
+
+state 94
+	forNumStmt:  For Ident '='.expr ',' expr block 
+	forNumStmt:  For Ident '='.expr ',' expr ',' expr block 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 133
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 95
+	lhs:  prefixexp '.' Ident.    (37)
+
+	.  reduce 37 (src line 163)
+
+
+state 96
+	lhs:  prefixexp '[' expr.']' 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	']'  shift 134
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+
+state 97
+	functioncall:  prefixexp '(' ')'.    (41)
+
+	.  reduce 41 (src line 175)
+
+
+state 98
+	functioncall:  prefixexp '(' args.')' 
+	args:  args.',' expr 
+
+	','  shift 136
+	')'  shift 135
+	.  error
+
+
+state 99
+	args:  expr.    (43)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 43 (src line 181)
+
+
+state 100
+	exprlist:  exprlist ',' expr.    (35)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 35 (src line 157)
+
+
+101: shift/reduce conflict (shift 60(0), red'n 52(5)) on '|'
+101: shift/reduce conflict (shift 61(0), red'n 52(5)) on '&'
+state 101
+	expr:  expr.'+' expr 
+	expr:  expr '+' expr.    (52)
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 52 (src line 205)
+
+
+102: shift/reduce conflict (shift 60(0), red'n 53(5)) on '|'
+102: shift/reduce conflict (shift 61(0), red'n 53(5)) on '&'
+state 102
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr '-' expr.    (53)
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 53 (src line 210)
+
+
+103: shift/reduce conflict (shift 60(0), red'n 54(6)) on '|'
+103: shift/reduce conflict (shift 61(0), red'n 54(6)) on '&'
+state 103
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr '*' expr.    (54)
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 54 (src line 215)
+
+
+104: shift/reduce conflict (shift 60(0), red'n 55(6)) on '|'
+104: shift/reduce conflict (shift 61(0), red'n 55(6)) on '&'
+state 104
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr '/' expr.    (55)
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 55 (src line 220)
+
+
+105: shift/reduce conflict (shift 60(0), red'n 56(6)) on '|'
+105: shift/reduce conflict (shift 61(0), red'n 56(6)) on '&'
+state 105
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr '%' expr.    (56)
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 56 (src line 225)
+
+
+106: shift/reduce conflict (shift 62(2), red'n 57(0)) on And
+106: shift/reduce conflict (shift 63(1), red'n 57(0)) on Or
+106: shift/reduce conflict (shift 68(3), red'n 57(0)) on Eq2
+106: shift/reduce conflict (shift 69(3), red'n 57(0)) on Neq
+106: shift/reduce conflict (shift 67(3), red'n 57(0)) on Ge
+106: shift/reduce conflict (shift 66(3), red'n 57(0)) on Le
+106: shift/reduce conflict (shift 70(4), red'n 57(0)) on Dot2
+106: shift/reduce conflict (shift 65(3), red'n 57(0)) on '>'
+106: shift/reduce conflict (shift 64(3), red'n 57(0)) on '<'
+106: shift/reduce conflict (shift 55(5), red'n 57(0)) on '+'
+106: shift/reduce conflict (shift 56(5), red'n 57(0)) on '-'
+106: shift/reduce conflict (shift 57(6), red'n 57(0)) on '*'
+106: shift/reduce conflict (shift 58(6), red'n 57(0)) on '/'
+106: shift/reduce conflict (shift 59(6), red'n 57(0)) on '%'
+106: shift/reduce conflict (shift 60(0), red'n 57(0)) on '|'
+106: shift/reduce conflict (shift 61(0), red'n 57(0)) on '&'
+state 106
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr '|' expr.    (57)
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 57 (src line 230)
+
+
+107: shift/reduce conflict (shift 62(2), red'n 58(0)) on And
+107: shift/reduce conflict (shift 63(1), red'n 58(0)) on Or
+107: shift/reduce conflict (shift 68(3), red'n 58(0)) on Eq2
+107: shift/reduce conflict (shift 69(3), red'n 58(0)) on Neq
+107: shift/reduce conflict (shift 67(3), red'n 58(0)) on Ge
+107: shift/reduce conflict (shift 66(3), red'n 58(0)) on Le
+107: shift/reduce conflict (shift 70(4), red'n 58(0)) on Dot2
+107: shift/reduce conflict (shift 65(3), red'n 58(0)) on '>'
+107: shift/reduce conflict (shift 64(3), red'n 58(0)) on '<'
+107: shift/reduce conflict (shift 55(5), red'n 58(0)) on '+'
+107: shift/reduce conflict (shift 56(5), red'n 58(0)) on '-'
+107: shift/reduce conflict (shift 57(6), red'n 58(0)) on '*'
+107: shift/reduce conflict (shift 58(6), red'n 58(0)) on '/'
+107: shift/reduce conflict (shift 59(6), red'n 58(0)) on '%'
+107: shift/reduce conflict (shift 60(0), red'n 58(0)) on '|'
+107: shift/reduce conflict (shift 61(0), red'n 58(0)) on '&'
+state 107
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr '&' expr.    (58)
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 58 (src line 235)
+
+
+108: shift/reduce conflict (shift 60(0), red'n 59(2)) on '|'
+108: shift/reduce conflict (shift 61(0), red'n 59(2)) on '&'
+state 108
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr And expr.    (59)
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 59 (src line 237)
+
+
+109: shift/reduce conflict (shift 60(0), red'n 60(1)) on '|'
+109: shift/reduce conflict (shift 61(0), red'n 60(1)) on '&'
+state 109
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr Or expr.    (60)
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 60 (src line 239)
+
+
+110: shift/reduce conflict (shift 60(0), red'n 61(3)) on '|'
+110: shift/reduce conflict (shift 61(0), red'n 61(3)) on '&'
+state 110
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr '<' expr.    (61)
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 61 (src line 241)
+
+
+111: shift/reduce conflict (shift 60(0), red'n 62(3)) on '|'
+111: shift/reduce conflict (shift 61(0), red'n 62(3)) on '&'
+state 111
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr '>' expr.    (62)
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 62 (src line 243)
+
+
+112: shift/reduce conflict (shift 60(0), red'n 63(3)) on '|'
+112: shift/reduce conflict (shift 61(0), red'n 63(3)) on '&'
+state 112
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr Le expr.    (63)
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 63 (src line 245)
+
+
+113: shift/reduce conflict (shift 60(0), red'n 64(3)) on '|'
+113: shift/reduce conflict (shift 61(0), red'n 64(3)) on '&'
+state 113
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr Ge expr.    (64)
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 64 (src line 247)
+
+
+114: shift/reduce conflict (shift 60(0), red'n 65(3)) on '|'
+114: shift/reduce conflict (shift 61(0), red'n 65(3)) on '&'
+state 114
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr Eq2 expr.    (65)
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 65 (src line 249)
+
+
+115: shift/reduce conflict (shift 60(0), red'n 66(3)) on '|'
+115: shift/reduce conflict (shift 61(0), red'n 66(3)) on '&'
+state 115
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr Neq expr.    (66)
+	expr:  expr.Dot2 expr 
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 66 (src line 251)
+
+
+116: shift/reduce conflict (shift 60(0), red'n 68(4)) on '|'
+116: shift/reduce conflict (shift 61(0), red'n 68(4)) on '&'
+state 116
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+	expr:  expr Dot2 expr.    (68)
+
+	Dot2  shift 70
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 68 (src line 255)
+
+
+state 117
+	expr:  Function parlist block.    (51)
+
+	.  reduce 51 (src line 199)
+
+
+state 118
+	parlist:  '(' ')'.    (26)
+
+	.  reduce 26 (src line 131)
+
+
+state 119
+	parlist:  '(' namelist.')' 
+	parlist:  '(' namelist.',' Dot3 ')' 
+	namelist:  namelist.',' Ident 
+
+	','  shift 138
+	')'  shift 137
+	.  error
+
+
+state 120
+	expr:  '(' expr ')'.    (67)
+
+	.  reduce 67 (src line 253)
+
+
+state 121
+	dictConstructor:  '{' entries '}'.    (75)
+
+	.  reduce 75 (src line 276)
+
+
+state 122
+	entries:  entries ','.entry 
+
+	String  shift 80
+	Ident  shift 81
+	.  error
+
+	entry  goto 139
+
+state 123
+	entry:  String ':'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 140
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 124
+	entry:  Ident ':'.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 141
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 125
+	listConstructor:  '[' exprlist ']'.    (81)
+
+	.  reduce 81 (src line 304)
+
+
+state 126
+	block:  '{' chunk.'}' 
+
+	'}'  shift 142
+	.  error
+
+
+state 127
+	stmt:  Function Ident parlist block.    (15)
+
+	.  reduce 15 (src line 88)
+
+
+state 128
+	stmt:  Var namelist '=' exprlist.    (17)
+	exprlist:  exprlist.',' expr 
+
+	','  shift 54
+	.  reduce 17 (src line 92)
+
+
+state 129
+	namelist:  namelist ',' Ident.    (30)
+
+	.  reduce 30 (src line 141)
+
+
+state 130
+	stmt:  Append '(' lhs ','.expr ')' 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 143
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 131
+	ifstmt:  If expr block Else.block 
+	ifstmt:  If expr block Else.ifstmt 
+
+	If  shift 18
+	'{'  shift 87
+	.  error
+
+	block  goto 144
+	ifstmt  goto 145
+
+state 132
+	forRangeStmt:  For Ident ',' Ident.'=' Range lhs block 
+
+	'='  shift 146
+	.  error
+
+
+state 133
+	forNumStmt:  For Ident '=' expr.',' expr block 
+	forNumStmt:  For Ident '=' expr.',' expr ',' expr block 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	','  shift 147
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+
+state 134
+	lhs:  prefixexp '[' expr ']'.    (38)
+
+	.  reduce 38 (src line 165)
+
+
+state 135
+	functioncall:  prefixexp '(' args ')'.    (42)
+
+	.  reduce 42 (src line 177)
+
+
+state 136
+	args:  args ','.expr 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 148
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 137
+	parlist:  '(' namelist ')'.    (27)
+
+	.  reduce 27 (src line 133)
+
+
+state 138
+	parlist:  '(' namelist ','.Dot3 ')' 
+	namelist:  namelist ','.Ident 
+
+	Ident  shift 129
+	Dot3  shift 149
+	.  error
+
+
+state 139
+	entries:  entries ',' entry.    (77)
+
+	.  reduce 77 (src line 284)
+
+
+state 140
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+	entry:  String ':' expr.    (78)
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 78 (src line 288)
+
+
+state 141
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+	entry:  Ident ':' expr.    (79)
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 79 (src line 293)
+
+
+state 142
+	block:  '{' chunk '}'.    (31)
+
+	.  reduce 31 (src line 145)
+
+
+state 143
+	stmt:  Append '(' lhs ',' expr.')' 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	')'  shift 150
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+
+state 144
+	ifstmt:  If expr block Else block.    (21)
+
+	.  reduce 21 (src line 111)
+
+
+state 145
+	ifstmt:  If expr block Else ifstmt.    (22)
+
+	.  reduce 22 (src line 113)
+
+
+state 146
+	forRangeStmt:  For Ident ',' Ident '='.Range lhs block 
+
+	Range  shift 151
+	.  error
+
+
+state 147
+	forNumStmt:  For Ident '=' expr ','.expr block 
+	forNumStmt:  For Ident '=' expr ','.expr ',' expr block 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 152
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 148
+	args:  args ',' expr.    (44)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  reduce 44 (src line 183)
+
+
+state 149
+	parlist:  '(' namelist ',' Dot3.')' 
+
+	')'  shift 153
+	.  error
+
+
+state 150
+	stmt:  Append '(' lhs ',' expr ')'.    (19)
+
+	.  reduce 19 (src line 102)
+
+
+state 151
+	forRangeStmt:  For Ident ',' Ident '=' Range.lhs block 
+
+	Ident  shift 21
+	.  error
+
+	lhs  goto 154
+	prefixexp  goto 20
+	functioncall  goto 39
+
+state 152
+	forNumStmt:  For Ident '=' expr ',' expr.block 
+	forNumStmt:  For Ident '=' expr ',' expr.',' expr block 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'{'  shift 87
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	','  shift 156
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+	block  goto 155
+
+state 153
+	parlist:  '(' namelist ',' Dot3 ')'.    (28)
+
+	.  reduce 28 (src line 135)
+
+
+state 154
+	forRangeStmt:  For Ident ',' Ident '=' Range lhs.block 
+	prefixexp:  lhs.    (39)
+
+	'{'  shift 87
+	.  reduce 39 (src line 169)
+
+	block  goto 157
+
+state 155
+	forNumStmt:  For Ident '=' expr ',' expr block.    (24)
+
+	.  reduce 24 (src line 125)
+
+
+state 156
+	forNumStmt:  For Ident '=' expr ',' expr ','.expr block 
+
+	Function  shift 31
+	True  shift 25
+	False  shift 26
+	Nil  shift 27
+	Number  shift 28
+	String  shift 29
+	Ident  shift 21
+	'{'  shift 40
+	'('  shift 32
+	'!'  shift 34
+	'-'  shift 33
+	'['  shift 41
+	'#'  shift 37
+	.  error
+
+	lhs  goto 38
+	prefixexp  goto 30
+	expr  goto 158
+	functioncall  goto 39
+	dictConstructor  goto 35
+	listConstructor  goto 36
+
+state 157
+	forRangeStmt:  For Ident ',' Ident '=' Range lhs block.    (23)
+
+	.  reduce 23 (src line 117)
+
+
+state 158
+	forNumStmt:  For Ident '=' expr ',' expr ',' expr.block 
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'|' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.And expr 
+	expr:  expr.Or expr 
+	expr:  expr.'<' expr 
+	expr:  expr.'>' expr 
+	expr:  expr.Le expr 
+	expr:  expr.Ge expr 
+	expr:  expr.Eq2 expr 
+	expr:  expr.Neq expr 
+	expr:  expr.Dot2 expr 
+
+	And  shift 62
+	Or  shift 63
+	Eq2  shift 68
+	Neq  shift 69
+	Ge  shift 67
+	Le  shift 66
+	Dot2  shift 70
+	'{'  shift 87
+	'>'  shift 65
+	'<'  shift 64
+	'+'  shift 55
+	'-'  shift 56
+	'*'  shift 57
+	'/'  shift 58
+	'%'  shift 59
+	'|'  shift 60
+	'&'  shift 61
+	.  error
+
+	block  goto 159
+
+state 159
+	forNumStmt:  For Ident '=' expr ',' expr ',' expr block.    (25)
+
+	.  reduce 25 (src line 127)
+
+
+51 terminals, 22 nonterminals
+82 grammar rules, 160/16000 states
+80 shift/reduce, 0 reduce/reduce conflicts reported
+71 working sets used
+memory: parser 259/240000
+136 extra closures
+924 shift entries, 8 exceptions
+77 goto entries
+182 entries saved by goto default
+Optimizer space used: output 459/240000
+459 table entries, 120 zero
+maximum spread: 51, maximum offset: 158
